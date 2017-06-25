@@ -8,7 +8,7 @@ import (
 
 // Root is the top-level handler for this hello version.
 func Root(res http.ResponseWriter, req *http.Request) {
-	log.Print("v1.Root(): ", req.URL.String())
+	log.Printf("v1.Root(): %s %s", req.Method, req.URL.String())
 	var head string
 	head, req.URL.Path = helpers.ShiftPath(req.URL.Path)
 	switch head {

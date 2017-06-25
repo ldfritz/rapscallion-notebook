@@ -9,7 +9,7 @@ import (
 
 // Root is the top-level handler for this hello version.
 func Root(res http.ResponseWriter, req *http.Request) {
-	log.Print("dev.Root(): ", req.URL.String())
+	log.Printf("dev.Root(): %s %s", req.Method, req.URL.String())
 	var head string
 	head, req.URL.Path = helpers.ShiftPath(req.URL.Path)
 	switch head {
@@ -20,12 +20,19 @@ func Root(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// HelloHandlerv1 is the v1 hello endpoint.
+// Greet is the hello endpoint.
 func Greet(res http.ResponseWriter, req *http.Request) {
-	log.Print("dev.Greet(): ", req.URL.String())
+	log.Printf("dev.Greet(): %s %s", req.Method, req.URL.String())
 	name := req.URL.Query().Get("name")
 	if len(name) == 0 {
 		name = "World"
 	}
-	io.WriteString(res, "Hello, "+name+"!\n")
+	switch req.Method {
+	case "GET":
+		io.WriteString(res, "Hello, "+name+"!\n")
+	case "PUT":
+		io.WriteString(res, "High-five, "+name+"!\n")
+	default:
+		http.Error(res, "Only GET and PUT are allowed", http.StatusMethodNotAllowed)
+	}
 }

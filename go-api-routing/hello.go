@@ -2,8 +2,8 @@ package main
 
 import (
 	"github.com/ldfritz/rapscallion-notebook/go-api-routing/dev"
-	"github.com/ldfritz/rapscallion-notebook/go-api-routing/v1"
 	"github.com/ldfritz/rapscallion-notebook/go-api-routing/helpers"
+	"github.com/ldfritz/rapscallion-notebook/go-api-routing/v1"
 	"log"
 	"net/http"
 )
@@ -13,7 +13,7 @@ type Root struct{}
 
 // ServeHTTP on the Root will identify the initial URL branch.
 func (a Root) ServeHTTP(res http.ResponseWriter, req *http.Request) {
-	log.Print("Root.ServeHTTP(): ", req.URL.String())
+	log.Printf("Root.ServeHTTP(): %s %s", req.Method, req.URL.String())
 	var head string
 	head, req.URL.Path = helpers.ShiftPath(req.URL.Path)
 	switch head {
@@ -27,7 +27,7 @@ func (a Root) ServeHTTP(res http.ResponseWriter, req *http.Request) {
 }
 
 func main() {
-	//	a := &Root{}
-	//	log.Fatal(http.ListenAndServe(":8080", a))
-	log.Fatal(http.ListenAndServe(":8080", &Root{}))
+	port := ":8080"
+	log.Printf("Starting server on %s (^C to stop)", port)
+	log.Fatal(http.ListenAndServe(port, &Root{}))
 }
