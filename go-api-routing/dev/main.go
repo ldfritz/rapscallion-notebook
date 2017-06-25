@@ -7,7 +7,11 @@ import (
 	"net/http"
 )
 
-// Root is the top-level handler for this hello version.
+// Root is the top-level handler for this version of the API.  All
+// requests for this version of the API start here.  Requests are
+// directed here by `Root.ServeHTTP` in `hello.go`.  From here they will
+// be forwarded onto the interesting bits.  Invalid paths raise an
+// error.
 func Root(res http.ResponseWriter, req *http.Request) {
 	log.Printf("dev.Root(): %s %s", req.Method, req.URL.String())
 	var head string
@@ -20,7 +24,10 @@ func Root(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-// Greet is the hello endpoint.
+// Greet is one of the interesting bits.  It gets a name out of the
+// query string, if one was provided.  And it check the HTTP method that
+// was used and adjusts its response accordingly.  Invalid methods raise
+// an error.  Otherwise a brief string is returned.
 func Greet(res http.ResponseWriter, req *http.Request) {
 	log.Printf("dev.Greet(): %s %s", req.Method, req.URL.String())
 	name := req.URL.Query().Get("name")
