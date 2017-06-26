@@ -14,6 +14,9 @@ import (
 // error.
 func Root(res http.ResponseWriter, req *http.Request) {
 	log.Printf("dev.Root(): %s %s", req.Method, req.URL.String())
+	// The depth of this API is shallow.  So, I am simply popping
+	// off the first item in this path.  And I will redirect to
+	// the function for that endpoint.
 	var head string
 	head, req.URL.Path = helpers.ShiftPath(req.URL.Path)
 	switch head {
@@ -30,10 +33,14 @@ func Root(res http.ResponseWriter, req *http.Request) {
 // an error.  Otherwise a brief string is returned.
 func Greet(res http.ResponseWriter, req *http.Request) {
 	log.Printf("dev.Greet(): %s %s", req.Method, req.URL.String())
+	// I check for a provided name, and set a default otherwise.
 	name := req.URL.Query().Get("name")
 	if len(name) == 0 {
 		name = "World"
 	}
+	// This is where I check the method to focus further.  This time
+	// I am not redirecting to another function.  I just include the
+	// possible branches right here in this function.
 	switch req.Method {
 	case "GET":
 		io.WriteString(res, "Hello, "+name+"!\n")
