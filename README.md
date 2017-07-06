@@ -29,6 +29,16 @@ Visit the package in your browser.
 http://localhost:8080/pkg/github.com/ldfritz/rapscallion-notebook/
 ```
 
+## Testing the examples
+
+If you are concerned about the accuracy of an example, you can test them.
+
+Browse to the folder with the appropriate tests and run the test suite.
+
+```
+go test -v
+```
+
 ## License
 
 > MIT License
