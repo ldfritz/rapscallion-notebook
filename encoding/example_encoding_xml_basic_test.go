@@ -1,4 +1,4 @@
-package main
+package encoding_test
 
 import (
 	"encoding/xml"
@@ -6,7 +6,8 @@ import (
 	"log"
 )
 
-var xmlData = `
+func Example_encodingXMLBasic() {
+	var xmlData = `
 <?xml version="1.0" encoding="UTF-8"?>
 <letter>
   <title maxlength="10"> Quote Letter </title>
@@ -28,23 +29,18 @@ var xmlData = `
   <logo alt="Logo of Smith and Company Ltd." address="http://www.smith-company-ltd.com/logo.jpg"/>
 </letter>
 `
-
-type Letter struct {
-	Title      string   `xml:"title"`
-	Salutation string   `xml:"salutation"`
-	Text       []string `xml:"text"`
-}
-
-func main() {
+	type Letter struct {
+		Title      string `xml:"title"`
+		Salutation string `xml:"salutation"`
+	}
 	var obj Letter
 	err := xml.Unmarshal([]byte(xmlData), &obj)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Printf("Title:\t%s\n", obj.Title)
-	fmt.Printf("Salutation:\t%s\n", obj.Salutation)
-	// Note that the embedded tags are removed!
-	for i, v := range obj.Text {
-		fmt.Printf("Paragraph %d:\n%s\n", i, v)
-	}
+	fmt.Println(obj.Title[1:6])
+	fmt.Println(obj.Salutation[0:4])
+	// Output:
+	// Quote
+	// Dear
 }

@@ -1,4 +1,4 @@
-package main
+package encoding_test
 
 import (
 	"encoding/xml"
@@ -6,7 +6,8 @@ import (
 	"log"
 )
 
-var xmlData = `
+func Example_encodingXMLSlices() {
+	var xmlData = `
 <?xml version="1.0" encoding="UTF-8"?>
 <letter>
   <title maxlength="10"> Quote Letter </title>
@@ -28,19 +29,18 @@ var xmlData = `
   <logo alt="Logo of Smith and Company Ltd." address="http://www.smith-company-ltd.com/logo.jpg"/>
 </letter>
 `
-
-type Letter struct {
-	Title      string `xml:"title"`
-	Salutation string `xml:"salutation"`
-}
-
-func main() {
+	type Letter struct {
+		Text []string `xml:"text"`
+	}
 	var obj Letter
 	err := xml.Unmarshal([]byte(xmlData), &obj)
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println(obj)
-	fmt.Println(obj.Title)
-	fmt.Println(obj.Salutation)
+	for _, v := range obj.Text {
+		fmt.Println(v[1:3])
+	}
+	// Output:
+	// ha
+	// We
 }
